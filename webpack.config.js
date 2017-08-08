@@ -13,7 +13,7 @@ const VENDOR_LIBS = [
     "redux-form",
     "redux-promise",
     "redux-thunk"
-  ]
+]
 
 module.exports = {
   // entry: [ // non code-splitting setup
@@ -25,7 +25,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'build'),
-    // publicPath: 'build/',
+    publicPath: '/',
     filename: '[name].[chunkhash].js' //name the bundled file with the key of the entry section
   },
   module: {

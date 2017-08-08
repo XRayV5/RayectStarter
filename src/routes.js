@@ -1,15 +1,37 @@
 import React from 'react'
-import { Route, IndexRoute } from 'react-router'
+import { Route, IndexRoute, Router, browserHistory, hashHistory } from 'react-router'
 
 import App from './components/app'
 import PostsIndex from './components/posts_index'
-import PostsNew from './components/posts_new'
-import PostsShow from './components/post_show'
+// import PostsNew from './components/posts_new'
+// import PostsShow from './components/post_show'
 
-export default (
-  <Route path='/' component={ App } >
-    <IndexRoute component={ PostsIndex } />
-    <Route path='posts/new' component={ PostsNew }/>
-    <Route path='posts/:id' component={ PostsShow }/>
-  </Route>
-)
+function errorLoading(error) {
+  throw new Error(`Dynamic page loading failed: ${error}`);
+}
+
+export const componentRoutes = {
+  component: App,
+  path: '/',
+  indexRoute: { component: PostsIndex },
+  childRoutes: [
+    {
+      path: 'posts/new',
+      getComponent(location, cb) {
+        System.import('./components/posts_new')
+        .then(module => cb(null, module.default))
+        .catch(errorLoading)
+      }
+    },
+    {
+      path: 'posts/:id',
+      getComponent(location, cb) {
+        System.import('./components/post_show')
+        .then(module => cb(null, module.default))
+        .catch(errorLoading)
+      }
+    }
+  ]
+}
+
+export default () => <Router history={ browserHistory } routes={componentRoutes} />
