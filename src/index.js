@@ -8,10 +8,15 @@ import promise from 'redux-promise'
 import routes from './routes'
 import reducers from './reducers';
 
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, /* preloadedState, */ composeEnhancers(
+    applyMiddleware(...[promise])
+  ));
+
+// const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={store}>
     <Router history={ browserHistory } routes={ routes } />
   </Provider>
   , document.querySelector('.container'));
