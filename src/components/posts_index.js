@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { fetchPosts } from '../actions/index'
-import { Link } from 'react-router'
+// import { Link } from 'react-router' //Old router legacy
+import { Link } from 'react-router-dom'
 
 class PostsIndex extends Component{
   componentWillMount() {

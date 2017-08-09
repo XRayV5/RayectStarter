@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { fetchPost, deletePost } from '../actions/index'
-import { Link } from 'react-router'
+// import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 class PostsShow extends Component {
   static contextTypes = {
@@ -9,12 +10,13 @@ class PostsShow extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchPost(this.props.params.id)
+    this.props.fetchPost(this.props.match.params.id)
   }
 
   onDeleteClick() {
-    this.props.deletePost(this.props.params.id)
-    .then( () => { this.context.router.push('/') } )
+    this.props.deletePost(this.props.match.params.id)
+    // .then( () => { this.context.router.push('/') } )
+    .then( () => { this.props.history.push('/') } )
   }
 
   render() {

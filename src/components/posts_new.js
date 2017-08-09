@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { createPost } from '../actions/index';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const renderField = ({input, label, meta: {touched, error, warning, invalid}}) => (
   <div className={`form-group ${touched && invalid ? 'has-danger' : ''}`}>
@@ -28,7 +29,8 @@ class PostsNew extends Component {
         // blog post has been created, navigate the user to the index
         // We navigate by calling this.context.router.push with the
         // new path to navigate to.
-        this.context.router.push('/');
+        // this.context.router.push('/'); //Router V2, V3
+        this.props.history.push('/')
       });
   }
 
@@ -88,6 +90,7 @@ function validate(values) {
   return errors;
 }
 
+// Context usage for Old Router 
 const InitializeForm =  reduxForm({
   form: 'PostsNewForm',  validate
 })(PostsNew);

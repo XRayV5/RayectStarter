@@ -5,7 +5,8 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise'
 
-import Routes from './routes'
+import Routes from './routes';
+import RoutesV4 from './routes_v4';
 import reducers from './reducers';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -17,6 +18,7 @@ const store = createStore(reducers, /* preloadedState, */ composeEnhancers(
 
 ReactDOM.render(
   <Provider store={store}>
-    <Routes />
+    {/* <Routes /> */}
+    <RoutesV4/>
   </Provider>
   , document.querySelector('.container'));
