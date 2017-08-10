@@ -11,7 +11,7 @@
     "start": "node server.js",
     "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "serve": "webpack-dev-server",
-    "build": "npm run clean && webpack",
+    "build": " NODE_ENV=production npm run clean && webpack -p",
     "clean": "rimraf build",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
