@@ -1,0 +1,50 @@
+
+- Added webpack cleanup plugin, no need to call rimraf before each build
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+
+- VENDOR_LIBS:
+Specify all node module libs that are to bundled inside vendor.#$%^&*.js
+
+ 
+- inside loader array
+ // {
+      //   use: ['style-loader', 'css-loader'], // order matters here, application from right to left
+      //   test: /\.css$/
+      // }
+
+//Seting up for production: When 'process.env.NODE_ENV' === 'production', react bypassing all error checking procedures in dev mode
+      new webpack.DefinePlugin({ 
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      })
+
+
+- To setup webpack and express to serve gzipped assets(.js, .css .etc)
+
+// webpack.config.js
+
+plugins: [
+  ...
+  new CompressionPlugin({   <-- Add this
+    asset: "[path].gz[query]",
+    algorithm: "gzip",
+    test: /\.js$|\.css$|\.html$/,
+    threshold: 10240,
+    minRatio: 0.8
+  })
+...
+]
+// server.js
+
+app.get('*.js', function(req, res, next) {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  res.set('Content-Type', 'text/javascript');
+  next();
+});
+
+app.get('*.css', function(req, res, next) {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  res.set('Content-Type', 'text/css');
+  next();
+})

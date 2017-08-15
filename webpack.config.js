@@ -1,7 +1,11 @@
 const path = require('path')
-const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const webpack = require('webpack')
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const CompressionPlugin = require("compression-webpack-plugin");
+
 const VENDOR_LIBS = [
     "axios",
     "lodash",
@@ -14,6 +18,11 @@ const VENDOR_LIBS = [
     "redux-promise",
     "redux-thunk"
 ]
+
+const extractSass = new ExtractTextPlugin({
+    filename: "[name].[contenthash].css",
+    disable: process.env.NODE_ENV !== "production"
+});
 
 module.exports = {
   // entry: [ // non code-splitting setup
@@ -40,10 +49,22 @@ module.exports = {
       //   test: /\.css$/
       // }
       {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
+        test: /\.(scss|css)$/,
+        use: extractSass.extract({
           fallback: "style-loader",
-          use: "css-loader"
+          // Due to be tested with .scss files
+          use:[ {
+                  loader: "css-loader",// translates CSS into CommonJS
+                  options: {
+                    sourceMap: true 
+                  }
+                }, {
+                  loader: "sass-loader" ,// compiles Sass to CSS
+                  options: {
+                    sourceMap: true 
+                  }
+                }
+              ]
         })
       },
       {
@@ -58,18 +79,34 @@ module.exports = {
     ],
   },
   plugins: [
-      new ExtractTextPlugin('style.css'),
-      new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendor', 'manifest']
-      }),
-      new HtmlWebpackPlugin({
-        template: 'src/index.html'
-      }),
-
-      //Seting up for production: When 'process.env.NODE_ENV' === 'production', react bypassing all error checking procedures in dev mode
-      new webpack.DefinePlugin({ 
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-      })
+    new WebpackCleanupPlugin(), 
+    extractSass,
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendor', 'manifest']
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
+    // **Uncomment to use Uglifyjs
+    // new UglifyJSPlugin({
+    //   parallel: {
+    //     cache: true,
+    //     workers: 4 // for e.g
+    //   },
+    //   sourceMap: true
+    // }),
+    // **Uncomment to build to compressed .gz files
+    // new CompressionPlugin({
+    //     asset: "[path].gz[query]",
+    //     algorithm: "gzip",
+    //     test: /\.js$|\.html$|\.json$/,
+    //     threshold: 2048,
+    //     minRatio: 0.8
+    // }),
+    //Seting up for production: When 'process.env.NODE_ENV' === 'production', react bypassing all error checking procedures in dev mode
+    new webpack.DefinePlugin({ 
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    })
   ],
   resolve: {
     extensions: ['.js', '.jsx']

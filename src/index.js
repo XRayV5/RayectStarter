@@ -9,13 +9,15 @@ import Routes from './routes';
 import RoutesV4 from './routes_v4';
 import reducers from './reducers';
 
+// source
+import "../style/style.css"
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, /* preloadedState, */ composeEnhancers(
     applyMiddleware(...[promise])
   ));
 
 // const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
-
 ReactDOM.render(
   <Provider store={store}>
     {/* <Routes /> */}

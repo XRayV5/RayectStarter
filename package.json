@@ -10,11 +10,12 @@
     "postinstall": "NODE_ENV=production npm run clean && webpack -p",
     "start": "node server.js",
     "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "_dev": "webpack-dev-server --config webpack.dev.config.js --colors",
     "serve_dev": "webpack-dev-server",
     "serve_prod_win": "env NODE_ENV=production node server.js",
     "serve_prod": "env NODE_ENV=production node server.js",
     "build_win": "env NODE_ENV=production npm run clean && webpack -p",
-    "build": "NODE_ENV=production npm run clean && webpack -p",
+    "build": "NODE_ENV=production webpack -p",
     "clean": "rimraf build",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
@@ -36,6 +37,7 @@
     "babel-preset-stage-1": "^6.24.1",
     "babel-register": "^6.24.1",
     "chai": "^4.1.1",
+    "compression-webpack-plugin": "^1.0.0",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
@@ -43,11 +45,15 @@
     "image-webpack-loader": "^3.3.1",
     "jsdom": "^11.1.0",
     "mocha": "^3.5.0",
+    "node-sass": "^4.5.3",
     "react-addons-test-utils": "^15.6.0",
     "rimraf": "^2.6.1",
+    "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
+    "uglifyjs-webpack-plugin": "^0.4.6",
     "url-loader": "^0.5.9",
     "webpack": "^3.5.3",
+    "webpack-cleanup-plugin": "^0.5.1",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-dev-server": "^2.7.1"
   },
@@ -63,6 +69,7 @@
     "redux": "^3.7.2",
     "redux-form": "^6.8.0",
     "redux-promise": "^0.5.3",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "save-dev": "^2.0.0"
   }
 }
