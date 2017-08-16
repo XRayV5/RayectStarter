@@ -5,6 +5,7 @@ const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const CompressionPlugin = require("compression-webpack-plugin");
+const BabiliPlugin = require("babili-webpack-plugin");
 
 const VENDOR_LIBS = [
     "axios",
@@ -87,6 +88,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     }),
+    new BabiliPlugin(),
     // **Uncomment to use Uglifyjs
     // new UglifyJSPlugin({
     //   parallel: {
